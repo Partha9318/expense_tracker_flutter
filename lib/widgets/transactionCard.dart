@@ -40,7 +40,7 @@ class TxCard extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 25,
+                          fontSize: 25 * MediaQuery.of(context).textScaleFactor,
                           color: Colors.green,
                         ),
                       ),
@@ -66,7 +66,7 @@ class TxCard extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.green,
-                          fontSize: 18,
+                          fontSize: 18 * MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

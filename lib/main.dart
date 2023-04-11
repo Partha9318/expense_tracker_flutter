@@ -3,7 +3,6 @@ import 'package:flutter_complete_guide/widgets/chart.dart';
 import 'package:flutter_complete_guide/widgets/transaction_list.dart';
 import 'widgets/input.dart';
 import 'models/transaction.dart';
-import 'widgets/chart.dart';
 
 void main() => runApp(MyApp());
 

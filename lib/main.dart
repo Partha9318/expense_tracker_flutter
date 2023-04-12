@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+//import 'package:flutter/services.dart';
 import 'package:flutter_complete_guide/widgets/chart.dart';
 import 'package:flutter_complete_guide/widgets/transaction_list.dart';
 import 'widgets/input.dart';
 import 'models/transaction.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations(
+  //   [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp],
+  // );
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -27,8 +34,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final appBar = AppBar(
+    title: Text('Expense Tracker'),
+  );
   final List<Transaction> userTransactions = [];
   int txId = 0;
+
+  bool _showChart = false;
 
   List<Transaction> get _recentTransactions {
     return userTransactions.where((element) {
@@ -72,16 +84,72 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    bool portrait = MediaQuery.of(context).orientation == Orientation.portrait;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Expense Tracker'),
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Chart(_recentTransactions),
-            TransactionList(userTransactions, deleteTransaction),
+            portrait
+                ? Column(
+                    children: [
+                      Container(
+                        height: (MediaQuery.of(context).size.height -
+                                appBar.preferredSize.height -
+                                MediaQuery.of(context).padding.top) *
+                            0.25,
+                        child: Chart(_recentTransactions),
+                      ),
+                      Container(
+                        height: (MediaQuery.of(context).size.height -
+                                appBar.preferredSize.height -
+                                MediaQuery.of(context).padding.top) *
+                            0.70,
+                        child: TransactionList(
+                            userTransactions, deleteTransaction),
+                      )
+                    ],
+                  )
+                : Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Show Chart"),
+                          Switch(
+                            activeColor: Colors.blue,
+                            value: _showChart,
+                            onChanged: (val) {
+                              setState(() {
+                                _showChart = val;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      _showChart
+                          ? Column(
+                              children: [
+                                Container(
+                                  height: (MediaQuery.of(context).size.height -
+                                          appBar.preferredSize.height -
+                                          MediaQuery.of(context).padding.top) *
+                                      0.6,
+                                  child: Chart(_recentTransactions),
+                                ),
+                              ],
+                            )
+                          : Container(
+                              height: (MediaQuery.of(context).size.height -
+                                      appBar.preferredSize.height -
+                                      MediaQuery.of(context).padding.top) *
+                                  0.75,
+                              child: TransactionList(
+                                  userTransactions, deleteTransaction),
+                            ),
+                    ],
+                  )
           ],
         ),
       ),

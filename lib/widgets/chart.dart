@@ -44,19 +44,22 @@ class Chart extends StatelessWidget {
       margin: EdgeInsets.all(20),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: groupedTransactionValues.map((data) {
-            return Flexible(
-              fit: FlexFit.tight,
-              child: ChartBar(
-                  data['day'],
-                  data['amount'],
-                  totalSpending == 0.0
-                      ? 0.0
-                      : (data['amount'] as double) / totalSpending),
-            );
-          }).toList(),
+        child: Padding(
+          padding: const EdgeInsets.all(4),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: groupedTransactionValues.map((data) {
+              return Flexible(
+                fit: FlexFit.tight,
+                child: ChartBar(
+                    data['day'],
+                    data['amount'],
+                    totalSpending == 0.0
+                        ? 0.0
+                        : (data['amount'] as double) / totalSpending),
+              );
+            }).toList(),
+          ),
         ),
       ),
     );

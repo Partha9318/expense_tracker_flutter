@@ -10,38 +10,44 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.65,
-      child: transactions.isEmpty
-          ? Column(
-              children: [
-                Text(
-                  "No Transactions Added",
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  height: 450,
-                  child: Image.asset(
-                    'assets/images/waiting.png',
-                    fit: BoxFit.cover,
+    return LayoutBuilder(builder: (ctx, constraints) {
+      return Container(
+        child: transactions.isEmpty
+            ? Column(
+                children: [
+                  Container(
+                    height: constraints.maxHeight * 0.09,
+                    child: Text(
+                      "No Transactions Added",
+                      style: TextStyle(
+                          fontSize:
+                              20 * MediaQuery.of(context).textScaleFactor),
+                    ),
                   ),
-                )
-              ],
-            )
-          : ListView.builder(
-              itemBuilder: (context, index) {
-                return TxCard(
-                    txId: transactions[index].id,
-                    txAmount: transactions[index].amount,
-                    txTitle: transactions[index].title,
-                    txTime: transactions[index].date,
-                    delTx: deleteTransaction);
-              },
-              itemCount: transactions.length,
-            ),
-    );
+                  SizedBox(
+                    height: constraints.maxHeight * 0.03,
+                  ),
+                  Container(
+                    height: constraints.maxHeight * 0.8,
+                    child: Image.asset(
+                      'assets/images/waiting.png',
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                ],
+              )
+            : ListView.builder(
+                itemBuilder: (context, index) {
+                  return TxCard(
+                      txId: transactions[index].id,
+                      txAmount: transactions[index].amount,
+                      txTitle: transactions[index].title,
+                      txTime: transactions[index].date,
+                      delTx: deleteTransaction);
+                },
+                itemCount: transactions.length,
+              ),
+      );
+    });
   }
 }
